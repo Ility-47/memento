@@ -1,0 +1,17 @@
+# Игнорировать все папки node_modules на любом уровне вложенности
+node_modules/
+
+# Также можно добавить другие типичные исключения для Node.js проектов
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.env
+.env.local
+.env.*.local
+dist/
+build/
+.DS_Store
+coverage/
+.vscode/
+.idea/
+*.log

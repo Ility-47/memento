@@ -1,0 +1,436 @@
+// Переменные
+$primary-color: #6366f1;
+$primary-dark: #4f46e5;
+$primary-light: #818cf8;
+$secondary-color: #8b5cf6;
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+$bg-gradient-start: #667eea;
+$bg-gradient-end: #764ba2;
+$glass-bg: rgba(255, 255, 255, 0.1);
+$glass-border: rgba(255, 255, 255, 0.2);
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+$shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
+$border-radius: 16px;
+$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+// Основной контейнер
+.authContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, $bg-gradient-start 0%, $bg-gradient-end 100%);
+  position: relative;
+  overflow: hidden;
+
+  // Анимированный фон (особенность дизайна)
+  &::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(
+      circle at 20% 50%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 50%
+    );
+    animation: float 20s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    33% {
+      transform: translate(30px, -30px) rotate(120deg);
+    }
+    66% {
+      transform: translate(-20px, 20px) rotate(240deg);
+    }
+  }
+}
+
+// Контейнер формы
+.authWrapper {
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  z-index: 1;
+}
+
+// Переключатель форм
+.authToggle {
+  display: flex;
+  background: $glass-bg;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid $glass-border;
+  border-radius: $border-radius;
+  padding: 0.5rem;
+  margin-bottom: 2rem;
+  box-shadow: $shadow-md;
+  position: relative;
+  overflow: hidden;
+  gap: 0.5rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: calc(50% - 0.5rem);
+    height: calc(100% - 1rem);
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: calc(#{$border-radius} - 8px);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(0);
+    z-index: 0;
+    box-shadow: $shadow-sm;
+  }
+
+  &.registerMode::before {
+    transform: translateX(calc(100%));
+  }
+
+  button {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    transition: $transition;
+    border-radius: calc(#{$border-radius} - 8px);
+
+    &.active {
+      color: white;
+      font-weight: 600;
+    }
+
+    &:hover:not(.active) {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+// Сообщения
+.authMessage {
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  div {
+    padding: 1rem 1.25rem;
+    border-radius: $border-radius;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid $glass-border;
+    box-shadow: $shadow-sm;
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  }
+
+  .error {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fee2e2;
+
+    p {
+      color: #fee2e2;
+    }
+  }
+
+  .success {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: rgba(34, 197, 94, 0.3);
+    color: #dcfce7;
+
+    p {
+      color: #dcfce7;
+    }
+  }
+}
+
+// Контейнер для анимации форм
+.formContainer {
+  position: relative;
+  min-height: 500px;
+  perspective: 1000px;
+}
+
+// Форма
+.form {
+  background: $glass-bg;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid $glass-border;
+  border-radius: $border-radius;
+  padding: 2.5rem;
+  box-shadow: $shadow-xl;
+  position: relative;
+  overflow: hidden;
+
+  // Декоративный элемент (особенность)
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%
+    );
+    animation: rotate 15s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  h2 {
+    margin: 0 0 2rem 0;
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  // Группы полей
+  .fieldGroup {
+    margin-bottom: 1.5rem;
+    position: relative;
+    z-index: 1;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.875rem 1.25rem;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      transition: $transition;
+      box-shadow: $shadow-sm;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1),
+                    $shadow-md;
+        transform: translateY(-1px);
+      }
+
+      &:hover:not(:focus) {
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      font-family: inherit;
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    // Стили для полей с ошибками
+    .inputError {
+      border-color: rgba(239, 68, 68, 0.6) !important;
+      background: rgba(239, 68, 68, 0.1) !important;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+
+      &:focus {
+        border-color: rgba(239, 68, 68, 0.8) !important;
+        background: rgba(239, 68, 68, 0.15) !important;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2),
+                    $shadow-md !important;
+      }
+    }
+
+    // Сообщение об ошибке под полем
+    .fieldError {
+      display: block;
+      margin-top: 0.5rem;
+      color: #ef4444;
+      font-size: 0.75rem;
+      font-weight: 400;
+      animation: slideDown 0.3s ease-out;
+      padding-left: 0.25rem;
+      line-height: 1.4;
+    }
+  }
+
+  // Кнопка отправки
+  .submitButton {
+    width: 100%;
+    padding: 1rem 2rem;
+    margin-top: 1.5rem;
+    background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: $transition;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+  }
+}
+
+// Анимации переключения форм
+.formEnter {
+  animation: formSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.formExit {
+  animation: formSlideOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes formSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(40px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes formSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-40px) scale(0.96);
+  }
+}
+
+// Адаптивность
+@media (max-width: 640px) {
+  .authContainer {
+    padding: 1rem;
+  }
+
+  .form {
+    padding: 2rem 1.5rem;
+
+    h2 {
+      font-size: 1.75rem;
+    }
+  }
+
+  .authToggle {
+    button {
+      font-size: 0.85rem;
+      padding: 0.625rem 1rem;
+    }
+  }
+}
